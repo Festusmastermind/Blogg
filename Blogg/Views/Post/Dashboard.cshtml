@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Blogg.Models.Post>
+@inject UserManager<ApplicationUser> userManager
+@{
+    ViewData["Title"] = "Posts Dashboard";
+}
+<div class="row justify-content-center">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">Posts Summary</div>
+            <div class="card-body">
+                <a class="btn btn-outline-primary" asp-controller="Post" asp-action="Create">Create Post</a>
+                <a class="btn btn-outline-secondary ml-2" asp-controller="Profile" asp-action="Edit"
+                   >Profile</a><br /><br />
+                <h3>My Blog Posts</h3>
+                <small>You are logged in!!</small>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <th>Title</th>
+                            <th>Actions</th>
+                        </tr>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                                    <td>
+                                        <a asp-controller="Post" asp-action="Edit" asp-route-id="@item.ID"
+                                           class="btn btn-outline-primary mr-2" style="float: left">Edit</a>
+                                        <a asp-action="Delete" class="btn btn-outline-danger mr-2" asp-route-id="@item.ID">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

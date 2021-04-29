@@ -1,0 +1,25 @@
+﻿@model Blogg.Models.Post
+@inject UserManager<ApplicationUser> userManager
+
+@{
+    ViewData["Title"] = "Delete Post";
+}
+
+    <div class="card">
+        @*<img class="card-img-top" src="#" alt="Card image cap">*@
+        <div class="card-body">
+            <h2 class="card-title">@Html.DisplayFor(model => model.Title)</h2>
+            <p class="card-text">@Html.DisplayFor(model => model.Body)</p>
+        </div>
+        <div class="card-footer text-muted">
+            <b>Created At</b>
+            @Model.Created.ToString("MMMM dd, yyyy")
+            <br />
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="@Model.ID" />
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+            <a asp-controller="Post" asp-action="Index" class="btn-link"><small>Back To All Posts</small></a>
+        </div>
+    </div>
+

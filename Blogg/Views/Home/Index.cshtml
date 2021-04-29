@@ -1,0 +1,38 @@
+﻿@inject UserManager<ApplicationUser> userManager;
+@inject SignInManager<ApplicationUser> SignInManager;
+@{
+    ViewData["Title"] = "Home Page";
+}
+@*<partial name="_StatusMessage" model="Model.StatusMessage" />*@
+@if (TempData["message"] != null)
+{
+    <div class="alert alert-success alert-dismissible" role="alert" style="position:fixed; top:10px; right:10px; z-index:100000">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        @TempData["message"]
+    </div>
+}
+<div class="jumbotron text-center">
+    <h1>Welcome to AspNet Core </h1>
+    <p>A Blog with an authentication system! This serves as a starting point for building awesome applications</p>
+    <b>Embedded Features Includes</b>
+    <ul class="list-group list-group-horizontal ml-5">
+        <li class="list-group-item">Administrator Functionalities</li>
+        <li class="list-group-item">Authenticated User System</li>
+        <li class="list-group-item">Commentry System</li>
+        <li class="list-group-item">Blogposts security</li>
+        <li class="list-group-item">Others included</li>
+    </ul>
+    <div class="mt-2">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <button type="button" class="btn btn-primary">Explore and Enjoy Our Services</button>
+        }
+        else
+        {
+            <a class="btn btn-outline-primary" asp-controller="Account" asp-action="Login">Login</a>
+            <a class="btn btn-outline-success ml-1" asp-controller="Account" asp-action="Register">Register</a>
+        }
+    </div>
+
+
+</div>

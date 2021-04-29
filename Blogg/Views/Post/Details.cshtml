@@ -1,0 +1,20 @@
+﻿@model Blogg.Models.Post
+
+@{ 
+    ViewData["Title"] = "PostDetails";
+} 
+
+<div class="card">
+    @*<img class="card-img-top" src="#" alt="Card image cap">*@
+    <div class="card-body">
+        <h2 class="card-title">@Html.DisplayFor(model=>model.Title)</h2>
+        <p class="card-text">@Html.DisplayFor(model=>model.Body)</p>
+    </div>
+    <div class="card-footer text-muted">
+        <b>Written By</b> @Model.Creator.FirstName @Model.Creator.LastName<br />
+        <b>Created At</b>
+          @Model.Created.ToString("MMMM dd, yyyy")
+        <br />
+        <a asp-controller="Post" asp-action="Index" class="btn-link"><small>Back To All Posts</small></a>
+    </div>
+</div> 

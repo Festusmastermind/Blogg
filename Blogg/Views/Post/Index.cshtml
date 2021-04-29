@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Blogg.Models.Post>
+@inject SignInManager<ApplicationUser> signInManager
+@inject UserManager<ApplicationUser> userManager
+@{
+    ViewData["Title"] = "Blog Posts";
+}
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success alert-dismissible" role="alert" style="position:fixed; width:35%; top:10px; right:10px; z-index:100000">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        @TempData["success"]
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible" role="alert" style="position:fixed; width:35%; top:10px; right:10px; z-index:100000">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        @TempData["ErrorMessage"]
+    </div>
+}
+@if (Model.Any())
+{
+    <h4 style="color: red">All Posts</h4>
+    <div class="addSearch">
+        <form method="get" asp-controller="Post" asp-action="Index" class="form-group">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" name="searchString" placeholder="search for posts.." autofocus required>
+                <div class="input-group-append">
+                    <button class="btn btn-success" type="submit">Lookup Posts</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    @foreach (var item in Model)
+    {
+        <div class="card mt-2">
+            <div class="card-body mt-4">
+                <h5 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h5>
+                <p class="card-text"> @Html.DisplayFor(modelItem => item.Body)</p>
+            </div>
+            <div class="card-footer text-muted">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <div>Created At: @item.Created.ToString("MMMM dd, yyyy") | 
+                        Updated At: @DateTime.Today.ToString("MMMM dd, yyyy")</div>
+                        <p class="card-text">
+                            Author :
+                            @item.Creator.FirstName   @item.Creator.LastName
+                            @*Html.DisplayFor(modelItem => item.ApplicationUser.LastName)*@
+                        </p>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            @if (userManager.GetUserId(User) == item.Creator.Id)
+                            {
+                                <a asp-controller="Post" asp-action="Details" class="btn btn-outline-primary  mr-2" asp-route-id="@item.ID">View</a>
+                                <a asp-action="Edit" class="btn btn-outline-success  mr-2" asp-route-id="@item.ID">Edit</a>
+                                <a asp-action="Delete" class="btn btn-outline-danger mr-2" asp-route-id="@item.ID">Delete</a>
+                            }
+                            else
+                            {
+                                <a asp-action="Details" class="btn btn-outline-success mr-2" asp-route-id="@item.ID"> Read More &rarr;</a>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+
+}
+else
+{
+    <h3 style="color:darkred">NO BLOG POST IS FOUND</h3>
+    <small>
+        <a asp-controller="Post" asp-action="Create">Create Post</a>
+    </small>
+}
